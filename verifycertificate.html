@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verify</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+        .container { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+            max-width: 500px; 
+            width: 100%; 
+        }
+        h1 { 
+            text-align: center; 
+            color: #333; 
+            margin-bottom: 30px; 
+            font-size: 28px; 
+        }
+        #verify-form { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+        }
+        label { 
+            font-weight: bold; 
+            color: #555; 
+            margin-bottom: 5px; 
+        }
+        input[type="text"] { 
+            padding: 15px; 
+            border: 2px solid #ddd; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            transition: border 0.3s; 
+        }
+        input:focus { 
+            outline: none; 
+            border-color: #667eea; 
+        }
+        button { 
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24); 
+            color: white; 
+            padding: 15px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+        }
+        button:hover:not(:disabled) { 
+            transform: translateY(-2px); 
+        }
+        button:disabled { 
+            opacity: 0.7; 
+            cursor: not-allowed; 
+            transform: none; 
+        }
+        #result { 
+            display: none; 
+            margin-top: 30px; 
+            padding: 25px; 
+            background: #d4edda; 
+            border-left: 5px solid #28a745; 
+            border-radius: 10px; 
+            text-align: center; 
+        }
+        #result h3 { 
+            color: #28a745; 
+            margin-bottom: 15px; 
+        }
+        #result p { 
+            margin-bottom: 10px; 
+            font-size: 16px; 
+        }
+        #result strong { 
+            color: #155724; 
+        }
+        .print-btn { 
+            background: #28a745 !important; 
+            margin-top: 15px; 
+            padding: 12px 25px; 
+            font-size: 16px; 
+        }
+        @media (max-width: 600px) { 
+            .container { padding: 30px 20px; } 
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #result, #result * { visibility: visible; }
+            #result { position: absolute; left: 0; top: 0; width: 100%; background: white; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Certificate Verify</h1>
+        <form id="verify-form">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" placeholder="Enter your full name" required>
+            
+            <label for="regno">Registration No:</label>
+            <input type="text" id="regno" placeholder="Enter Reg No (e.g. FZ24XXXXX)" required>
+            
+            <button type="button">Verify Certificate ✅</button>
+        </form>
+        
+        <div id="result">
+            <h3>✅ Verified Successfully!</h3>
+            <p><strong>Name:</strong> <span id="verifiedName"></span></p>
+            <p><strong>Reg No:</strong> <span id="verifiedRegno"></span></p>
+            <p>Date of Birth: <span id="dob">05-12-2008</span></p>
+            <p>Certificate is valid to: <strong>2029-01-01</strong></p>
+            <button class="print-btn" onclick="printCert()">🖨️ Print Certificate</button>
+        </div>
+    </div>
+<!-- Scripts -->
+    <script>
+        const verifyBtn = document.querySelector('#verify-form button');
+        verifyBtn.onclick = verifyKar;
+
+        // Real-time validation
+        document.getElementById('name').oninput = function() {
+            this.style.borderColor = this.value.trim() ? '#28a745' : '#ddd';
+        };
+        document.getElementById('regno').oninput = function() {
+            this.style.borderColor = this.value.trim() ? '#28a745' : '#ddd';
+        };
+
+        function verifyKar() {
+            let name = document.getElementById('name').value.trim();
+            let regno = document.getElementById('regno').value.trim();
+            
+            if (!name || !regno) {
+                alert('Please enter name and reg.no!');
+                return;
+            }
+            
+            verifyBtn.innerHTML = 'Verifying... ⏳';
+            verifyBtn.disabled = true;
+            
+            setTimeout(() => {
+                document.getElementById('verifiedName').textContent = name;
+                document.getElementById('verifiedRegno').textContent = regno;
+                document.getElementById('result').style.display = 'block';
+                verifyBtn.innerHTML = 'Verify Again 🔄';
+                verifyBtn.disabled = false;
+            }, 2000);
+        }
+
+        function printCert() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
+<!-- This is the end of verifycertificate.html page. -->
